@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 http://maven.apache.org/xsd/maven-4.0.0.xsd">
+    <modelVersion>4.0.0</modelVersion>
+    <artifactId>eureka-server</artifactId>
+    <version>0.0.1-SNAPSHOT</version>
+    <name>eureka-server</name>
+    <description>注册中心</description>
+
+    <parent>
+        <groupId>com.xueyou.study</groupId>
+        <artifactId>spring-cloud-docker</artifactId>
+        <version>1.0-SNAPSHOT</version>
+        <relativePath>../pom.xml</relativePath> <!-- lookup parent from repository -->
+    </parent>
+
+    <dependencies>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-netflix-eureka-server</artifactId>
+        </dependency>
+    </dependencies>
+
+    <build>
+        <plugins>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-plugin.version}</version>
+                <!--将插件绑定在某个phase执行-->
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <!--将插件绑定在package这个phase上。也就是说，用户只需执行mvn deploy ，就会自动执行mvn docker:build-->
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                             <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <username>${nexus-username}</username>
+                            <password>${nexus-password}</password>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <!-- 需要环境变量配置 DOCKER_HOST=tcp://172.30.52.47:2376 这个docker服务远程也需要在远程 /etc/docker/daemon.json 里配置 "hosts": ["tcp://0.0.0.0:2376", "unix:///var/run/docker.sock"]-->
+                    <repository>${docker.registryUrl}/${docker.projectName}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
+        </plugins>
+    </build>
+
+</project>
