@@ -34,6 +34,7 @@
         <dockerfile-maven-plugin.version>1.4.9</dockerfile-maven-plugin.version>
         <docker.registryUrl>localhost:8082</docker.registryUrl>
         <docker.projectName>spring-cloud-docker</docker.projectName>
+        <docker.skip>true</docker.skip>
     </properties>
 
     <modules>
@@ -54,7 +55,43 @@
                     <skip>true</skip>
                 </configuration>
             </plugin>
+            <plugin>
+                <groupId>com.spotify</groupId>
+                <artifactId>dockerfile-maven-plugin</artifactId>
+                <version>${dockerfile-maven-plugin.version}</version>
+                <!--将插件绑定在某个phase执行-->
+                <executions>
+                    <execution>
+                        <id>build-image</id>
+                        <!--将插件绑定在package这个phase上。也就是说，用户只需执行mvn deploy ，就会自动执行mvn docker:build-->
+                        <phase>deploy</phase>
+                        <goals>
+                            <goal>build</goal>
+                            <goal>push</goal>
+                        </goals>
+                        <configuration>
+                            <username>${nexus-username}</username>
+                            <password>${nexus-password}</password>
+                        </configuration>
+                    </execution>
+                </executions>
+                <configuration>
+                    <skip>${docker.skip}</skip>
+                    <!-- 需要环境变量配置 DOCKER_HOST=tcp://172.30.52.47:2376 这个docker服务远程也需要在远程 /etc/docker/daemon.json 里配置 "hosts": ["tcp://0.0.0.0:2376", "unix:///var/run/docker.sock"]-->
+                    <repository>${docker.registryUrl}/${docker.projectName}/${project.artifactId}</repository>
+                    <tag>${project.version}</tag>
+                    <buildArgs>
+                        <JAR_FILE>target/${project.build.finalName}.jar</JAR_FILE>
+                    </buildArgs>
+                </configuration>
+            </plugin>
         </plugins>
+        <resources>
+            <resource>
+                <directory>src/main/resources</directory>
+                <filtering>true</filtering>
+            </resource>
+        </resources>
     </build>
 
     <dependencyManagement>
