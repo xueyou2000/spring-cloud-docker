@@ -1,4 +1,4 @@
-FROM frolvlad/alpine-oraclejdk8:slim
+FROM anapsix/alpine-java
 
 # 在主机 /var/lib/docker下创建临时文件，连接到容器的/tmp, 因为Spring Boot内嵌的Tomcat使用/tmp作为工作目录
 VOLUME /tmp
