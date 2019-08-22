@@ -33,7 +33,7 @@
         <!-- docker 相关-->
         <dockerfile-maven-plugin.version>1.4.9</dockerfile-maven-plugin.version>
         <docker.registryUrl>localhost:8082</docker.registryUrl>
-        <docker.projectName>com.xueyou.study</docker.projectName>
+        <docker.projectName>spring-cloud-docker</docker.projectName>
     </properties>
 
     <modules>

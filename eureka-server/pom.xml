@@ -35,7 +35,7 @@
                         <phase>deploy</phase>
                         <goals>
                             <goal>build</goal>
-                             <goal>push</goal>
+                            <goal>push</goal>
                         </goals>
                         <configuration>
                             <username>${nexus-username}</username>

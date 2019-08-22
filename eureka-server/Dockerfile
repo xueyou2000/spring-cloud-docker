@@ -11,6 +11,6 @@ ADD ${JAR_FILE} /app/app.jar
 
 ENV TZ=Asia/Shanghai
 
-EXPOSE 2000
+EXPOSE 12000
 
 ENTRYPOINT ["java", "-Xmx800m", "-jar","/app/app.jar", "--spring.profiles.active=pro"]
