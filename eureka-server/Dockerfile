@@ -11,6 +11,8 @@ ADD ${JAR_FILE} /app/app.jar
 
 ENV TZ=Asia/Shanghai
 
-EXPOSE 12000
+CMD ["--spring.profiles.active=pro"]
 
-ENTRYPOINT ["java", "-Xmx800m", "-jar","/app/app.jar", "--spring.profiles.active=pro"]
+ENTRYPOINT ["java", "-Xmx800m", "-jar","/app/app.jar"]
+
+# docker run eureka-server --spring.profiles.active=cluster

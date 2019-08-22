@@ -1,0 +1,23 @@
+version: "3"
+
+services:
+  eureka-server-1:
+    container_name: eureka-server-1
+    image: localhost:8082/spring-cloud-docker/eureka-server:0.0.1-SNAPSHOT
+    volumes:
+      - &homeVol /home:/home
+    expose:
+      - 12000
+    ports:
+      - 12000:12000
+    command: --spring.profiles.active=pro
+  eureka-server-2:
+    container_name: eureka-server-2
+    image: localhost:8082/spring-cloud-docker/eureka-server:0.0.1-SNAPSHOT
+    volumes:
+      - *homeVol
+    expose:
+      - 12001
+    ports:
+      - 12001:12001
+    command: --spring.profiles.active=cluster

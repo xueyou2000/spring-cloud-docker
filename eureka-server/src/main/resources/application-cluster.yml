@@ -1,9 +1,9 @@
 server:
-  port: 12000
+  port: 12001
 
 eureka:
   instance:
     prefer-ip-address: true
   client:
     service-url:
-      defaultZone: http://@nexus-address@:12001/eureka/
+      defaultZone: http://@nexus-address@:12000/eureka/
