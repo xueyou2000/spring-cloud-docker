@@ -5,7 +5,7 @@ services:
     container_name: eureka-server-1
     image: localhost:8082/spring-cloud-docker/eureka-server:0.0.1-SNAPSHOT
     volumes:
-      - &homeVol /home:/home
+      - &homeVol /home/xueyou/develop:/home
     expose:
       - 12000
     ports:
